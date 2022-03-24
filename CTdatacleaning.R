@@ -50,7 +50,7 @@ summary(is.na(ctdata$age))
 #ctdata$age<-ctdata$SubjectAge
 #ctdata$age[ctdata$SubjectAge<15|ctdata$SubjectAge>100]<-NA
 
-#generating the out of state variable.  This uses the resident indicator to determine in state status
+#generating the out of state variable.  This uses the resident indicator to determine in-state status
 table(ctdata$ResidentIndicator)
 ctdata$outofstate<-NA
 ctdata$outofstate<-ifelse(ctdata$ResidentIndicator=="False",1,ctdata$outofstate)
@@ -107,10 +107,10 @@ ctdata$stoppurpose2<-ifelse(ctdata$stoppurpose1==1|ctdata$stoppurpose1==5|ctdata
 table(ctdata$stoppurpose2)
 summary(is.na(ctdata$stoppurpose2))
 
-#generating a search variable.  CT collects information on the authorization for the search and in that records
-#no searches with an N.  
+#generating a search variable.  CT collects information on the authorization for the search, and
+#the absence of search is coded with "N" 
 table(ctdata$SearchAuthorizationCode)
-#In this case its slightly easier to code this beginning with one rather than na
+#In this case it's slightly easier to code this beginning with 1 rather than NA
 ctdata$searchoccur<-1
 ctdata$searchoccur<-ifelse(ctdata$SearchAuthorizationCode=="N",0,ctdata$searchoccur)
 ctdata$searchoccur<-ifelse(ctdata$SearchAuthorizationCode=="",NA,ctdata$searchoccur)
@@ -136,7 +136,7 @@ summary(is.na(ctdata$contraband))
 
 #generating an outcome variable
 #similarly to the stoppurpose this will have 2 codes.  The first is making the raw data numeric, the second bins these
-#However this variable draws from 2 of the raw variable.  We need to use the dispition code, but to also code if there was a custodial arrest
+#However this variable draws from 2 of the raw variable.  We need to use the disposition code, but to also code if there was a custodial arrest
 table(ctdata$InterventionDispositionCode)
 ctdata$outcome1<-NA
 ctdata$outcome1<-ifelse(ctdata$InterventionDispositionCode=="N",0,ctdata$outcome1)
@@ -158,7 +158,7 @@ ctdata$outcome2<-ifelse(ctdata$outcome1>4,3,ctdata$outcome2)
 table(ctdata$outcome2)
 summary(is.na(ctdata$outcome2))
 
-#Now to generate a variable coding a officers as high disparity or not, measuring "bad apples"
+#Now to generate a variable coding an officer as high disparity or not, measuring "bad apples"
 #officers will be coded as high disparity if they meet the follow conditions
 #1. They search at a higher rate than average
 #2. They have more than 50 stops for Black and White drivers
